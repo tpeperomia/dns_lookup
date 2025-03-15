@@ -10,12 +10,14 @@ I created this script as an exercise to become more familiar with API interactio
 - `requests` library (install using `pip install requests`)
 
 ## Example output 
+```
 What domain are we looking up? 
 example.com
 Looking up ... ... ...
 The IP for example.com is ['93.184.216.34']
 This record was created on 1995-08-14
+```
 
 ## Error Handling
-If no A records exist, the script notifies the user and exits.
-If an invalid domain is entered, an error message is displayed.
+- If no A records exist, the script notifies the user and exits.
+- If an invalid domain is entered, an error message is displayed.
