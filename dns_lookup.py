@@ -8,7 +8,6 @@ domain = input()
 
 # look up the DNS records for the domain
 look_up = requests.get(f"https://networkcalc.com/api/dns/lookup/{domain}").json()
-human_readable = json.dumps(look_up, indent = 4)
 
 # failout statement
 status = look_up.get("status")
@@ -21,12 +20,20 @@ else:
     print("There was a problem with your input, try again")
     exit()
 
-parsed_address = json.loads(human_readable)
-ip = [record["address"] for record in parsed_address["records"].get("A", [])]
+ip = [record["address"] for record in look_up["records"].get("A")]
 print(f"The IP for {domain} is {ip}")
 
 # check when it was registered and return date 
 whois_look_up = requests.get(f"https://networkcalc.com/api/dns/whois/{domain}").json()
-full_created_date = whois_look_up["whois"]["registry_created_date"]
-created_date = full_created_date.split('T')[0]
-print(f"This record was created on {created_date}")
+
+# to make sure the whois contains usable data
+status2 = whois_look_up.get("status")
+if status2 == "OK":
+    full_created_date = whois_look_up.get("whois", {}).get("registry_created_date", None)
+    if full_created_date:
+        created_date = full_created_date.split('T')[0]
+        print(f"This record was created on {created_date}")
+    else:
+        print(f"There are no date created records for {domain}")
+else: 
+    print(f"There are no date created records for {domain}")
