@@ -23,6 +23,13 @@ else:
 ip = [record["address"] for record in look_up["records"].get("A")]
 print(f"The IP for {domain} is {ip}")
 
+# function to look up IP organisation 
+to_check = ip[0]
+org_look_up = requests.get(f"https://ipinfo.io/{to_check}/json").json()
+org = org_look_up.get("org")
+
+print(f"This IP is registered to {org}")
+
 # check when it was registered and return date 
 whois_look_up = requests.get(f"https://networkcalc.com/api/dns/whois/{domain}").json()
 
